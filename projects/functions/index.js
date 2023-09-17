@@ -84,7 +84,7 @@
  */
    function returnArgumentsArray(...rest) {
     return rest;
-    }
+    };
 
 export {
   returnFirstArgument,

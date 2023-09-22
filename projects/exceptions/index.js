@@ -174,7 +174,7 @@
          }
        },
        mul(...args) {
-         return args. reduce((result, value) => result * value, number)
+         return args.reduce((result, value) => result * value, number)
        }
      };
 

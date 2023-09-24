@@ -1,3 +1,5 @@
+const photosDB = require('./photos.json');
+const friendsDB = require ('./friends.json');
 
 let methods = {
   getRandomElement(array) {
@@ -7,27 +9,26 @@ let methods = {
     return array[randomIdx];
     
   },  
-
+  
   getNextPhoto() {
-    // const photosDBUnparsed = JSON.stringify(require('./photos.json'));
-    const photosDB = require('./photos.json');
-    const friendsDB = require ('./friends.json');
-    
     let friendArrLength = friendsDB.length;
     let randomFriendIdx = parseInt(Math.random() * friendArrLength);
-
-    let friendId = friendsDB[randomFriendIdx].id;
-    let friendPhoto = photosDB.friendId[randomIdx].url;
+    let photoArrLength = photosDB[randomFriendIdx].length;
+    let randomPhotoIdx = parseInt(Math.random() * photoArrLength);
+  
+    let friendId = randomFriendIdx;
+    let friend = friendsDB[randomFriendIdx];
+    let friendPhotoUrl = photosDB[friendId][randomPhotoIdx].url;
     let friendEntries = {};
-
-    friendEntries.friend = friendId;
-    friendEntries.photo = friendPhoto;
-
+  
+    friendEntries.friend = friend;
+    friendEntries.url = friendPhotoUrl;
+  
+  
     return friendEntries;
-
+  
   }
-}
+};
 
-let photo = methods.getNextPhoto;
-
-console.log(photo.url);
+const getPhoto = methods.getNextPhoto();
+const getRandomEl = methods.getRandomElement();

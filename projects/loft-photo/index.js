@@ -3,7 +3,7 @@ const friendsDB = require ('./friends.json');
 
 let methods = {
   getRandomElement(array) {
-    let arrLength = array.length - 1;
+    let arrLength = array.length;
     let randomIdx = parseInt(Math.random() * arrLength);
 
     return array[randomIdx];
@@ -11,9 +11,9 @@ let methods = {
   },  
   
   getNextPhoto() {
-    let friendArrLength = friendsDB.length - 1;
+    let friendArrLength = friendsDB.length;
     let randomFriendIdx = parseInt(Math.random() * friendArrLength);
-    let photoArrLength = photosDB[randomFriendIdx].length - 1;
+    let photoArrLength = photosDB[randomFriendIdx].length;
     let randomPhotoIdx = parseInt(Math.random() * photoArrLength);
   
     let friendId = randomFriendIdx;

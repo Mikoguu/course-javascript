@@ -1,3 +1,8 @@
+import pages from './pages';
+import('./styles.css');
+
+const pageNames = ['login', 'main', 'profile'];
+
 const photosDB = require('./photos.json');
 const friendsDB = require ('./friends.json');
 
@@ -32,3 +37,8 @@ let methods = {
 
 const getPhoto = methods.getNextPhoto();
 const getRandomEl = methods.getRandomElement();
+
+document.addEventListener('click', () => {
+  const pageName = getRandomEl(pageNames);
+  pages.openPage(pageName);
+});

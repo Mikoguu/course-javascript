@@ -11,6 +11,9 @@
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
  */
 function createDivWithText(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div;
 }
 
 /*
@@ -22,6 +25,8 @@ function createDivWithText(text) {
    prepend(document.querySelector('#one'), document.querySelector('#two')) // добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
 function prepend(what, where) {
+  where.prepend(what);
+  return where;
 }
 
 /*
@@ -44,6 +49,14 @@ function prepend(what, where) {
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
+  let nodes = [];
+  const children = where.children;
+  for (let i = 0; i < children.length; i++) {
+    if (children[i].nextElementSibling.tagName === "P") {
+      nodes.push(children[i]);
+    }
+  }
+  return nodes;
 }
 
 /*
@@ -66,8 +79,10 @@ function findAllPSiblings(where) {
 function findError(where) {
   const result = [];
 
-  for (const child of where.childNodes) {
-    result.push(child.textContent);
+  for (const node of where.childNodes) {
+    if (node.nodeType === 3) {
+      result.push(node.textContent);
+    }
   }
 
   return result;
@@ -86,6 +101,13 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+  const childNodes = where.childNodes;
+  for (const node of childNodes) {
+    if (node.nodeType === 3) {
+      where.removeChild(node);
+    }
+  }
+  return childNodes;
 }
 
 /*
@@ -109,7 +131,34 @@ function deleteTextNodes(where) {
    }
  */
 function collectDOMStat(root) {
+  const stats = {
+    tags: {},
+    classes: {},
+    texts: 0
+  };
+
+  function scan(root) {
+    const childNodes = body.childNodes;
+    for (const child of childNodes) {
+      if (child.nodeType === 1) {
+        stats.tags.hasOwnProperty(child.tagName) 
+          ? stats.tags[child.tagName]++ 
+          : stats.tags[child.tagName] = 1;
+      } else if (child.nodeType === 3) {
+        stats.texts++;
+      }
+
+      for (const className of (child.classList ?? [])) {
+        className in stats.classes 
+        ? stats.classes[className]++ 
+        : stats.classes[className] = 1; 
+      } 
+
+      scan(root);
+    }
+  }
 }
+
 
 export {
   createDivWithText,

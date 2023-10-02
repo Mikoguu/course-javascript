@@ -52,7 +52,7 @@ function findAllPSiblings(where) {
   let nodes = [];
   const children = where.children;
   for (let i = 0; i < children.length; i++) {
-    if (children[i].nextElementSibling.tagName === "P") {
+    if (children[i].nextElementSibling?.tagName === "P") {
       nodes.push(children[i]);
     }
   }
@@ -77,15 +77,16 @@ function findAllPSiblings(where) {
    findError(document.body) // функция должна вернуть массив с элементами 'привет' и 'loftschool'
  */
 function findError(where) {
+  
   const result = [];
 
   for (const node of where.childNodes) {
-    if (node.nodeType === 3) {
-      result.push(node.textContent);
+    if (node.nodeType === 1 && node.innerHTML) {
+      result.push(node.innerHTML);
     }
   }
 
-  return result;
+    return result;
 }
 
 /*
@@ -138,7 +139,7 @@ function collectDOMStat(root) {
   };
 
   function scan(root) {
-    const childNodes = body.childNodes;
+    const childNodes = root.childNodes;
     for (const child of childNodes) {
       if (child.nodeType === 1) {
         stats.tags.hasOwnProperty(child.tagName) 
@@ -154,9 +155,11 @@ function collectDOMStat(root) {
         : stats.classes[className] = 1; 
       } 
 
-      scan(root);
+      scan(child);
     }
   }
+  scan(root);
+  return stats;
 }
 
 

@@ -16,6 +16,7 @@ export default {
     const photos = await this.getFriendPhotos(friend);
     const photo = this.getRandomElement(photos.items);
     const size = this.findSize(photo);
+    console.log(photo);
     return { friend, id: photo.id, url: size.url};
    
   },
@@ -66,15 +67,14 @@ getPhotos(owner) {
   return this.callAPI('photos.getAll', {owner_id: owner.id});
 },
 
-async getFriendPhotos(id) {
-  let photos = this.photoCache[id];
+async getFriendPhotos(friend) {
+  let photos = this.photoCache[friend.id];
 
   if (photos) {
     return photos;
   };
-  photos = await this.getPhotos(id);
-  this.photoCache[id] = photos;
-
+  photos = await this.getPhotos(friend);
+  this.photoCache[friend.id] = photos;
   
   return photos;
 },

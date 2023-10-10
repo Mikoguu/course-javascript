@@ -11,6 +11,8 @@ export default {
     const headerPhotoComp = document.querySelector('.component-header-photo');
     const headerNameComp = document.querySelector('.component-header-name');
 
+    console.log({ friend, url });
+
     headerPhotoComp.style.backgroundImage = `url('${friend.photo_50}')`;
     headerNameComp.innerText = `${friend.first_name ?? ''} ${friend.last_name ?? ''}`;
     photoComp.style.backgroundImage = `url(${url})`;
@@ -25,9 +27,7 @@ export default {
     });
 
     document.querySelector('.component-photo').addEventListener('touchend', async (e) => {
-      const direction = e.changedTouches[0].pageY - startFrom;
-      console.log(direction)
-
+      const direction = e.changedTouches[0].pageY - startFrom.y;
       if (direction < 0) {
         await this.getNextPhoto();
       }

@@ -1,7 +1,6 @@
-import pages from './pages';
-import mainPage from './mainPage';
-import loginPage from './loginPage';
-import('./styles.css');
+import pages from './pages.js';
+import mainPage from './mainPage.js';
+import loginPage from './loginPage.js';
 
 pages.openPage('login');
 loginPage.handleEvents();

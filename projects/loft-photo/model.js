@@ -5,20 +5,19 @@ const SETTINGS_PHOTOS = 4;
 
 export default {
   getRandomElement(array) {
-    let arrLength = array.length;
-    let randomIdx = parseInt(Math.random() * arrLength);
+    const arrLenght = array?.length || 0;
 
-    return array[randomIdx];
-    
+    const idx = Math.round(Math.random() * (arrLenght - 1));
+    return array[idx];
   },
 
-  getNextPhoto() {
+ async getNextPhoto() {
     const friend = this.getRandomElement(this.friends.items);
-    const photos = this.getFriendPhotos(friend.id);
+    const photos = await this.getFriendPhotos(friend);
     const photo = this.getRandomElement(photos.items);
     const size = this.findSize(photo);
-
     return { friend, id: photo.id, url: size.url};
+   
   },
 
   login() {
@@ -48,35 +47,35 @@ export default {
                resolve(response.response);
            }
        });
-   })
+   });
 },
 
 getFriends() {
-
-  return this.callAPI('friends.get', {fields: ''});
+  const params = {
+    fields: ['photo_50', 'photo_100']
+  };
+  return this.callAPI('friends.get', params);
 },
 
 async init() {
-    this.photoCache = {};
-    this.friends =  await this.getFriends();
+  this.photoCache = {};
+  this.friends = await this.getFriends();
 },
 
 getPhotos(owner) {
-  return this.callAPI('photos.getAll', {owner_id: owner});
+  return this.callAPI('photos.getAll', {owner_id: owner.id});
 },
 
 async getFriendPhotos(id) {
-  const photos = this.photoCache[id];
+  let photos = this.photoCache[id];
 
   if (photos) {
     return photos;
-  }
-
-  // const photos = вместо этого комментария вставьте код для получения фотографии друга из ВК
-
+  };
   photos = await this.getPhotos(id);
   this.photoCache[id] = photos;
 
+  
   return photos;
 },
 

@@ -16,7 +16,7 @@ export default {
     const photos = await this.getFriendPhotos(friend);
     const photo = this.getRandomElement(photos.items);
     const size = this.findSize(photo);
-    console.log(photo);
+
     return { friend, id: photo.id, url: size.url};
    
   },
@@ -61,9 +61,11 @@ getFriends() {
 async init() {
   this.photoCache = {};
   this.friends = await this.getFriends();
+  [this.me] = await this.getUsers();
 },
 
 getPhotos(owner) {
+  
   return this.callAPI('photos.getAll', {owner_id: owner.id});
 },
 
@@ -93,5 +95,21 @@ findSize(photo) {
   }
 
   return size;
-}
+},
+logout() {
+  return new Promise(resolve => VK.Auth.revokeGrants(resolve));
+},
+
+getUsers(ids) {
+  const params = {
+    fields: ['photo_50', 'photo_100'],
+  };
+
+  if (ids) {
+    params.user_ids = ids;
+  }
+
+  return this.callAPI('users.get' , params);
+},
+
 };

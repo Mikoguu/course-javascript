@@ -25,6 +25,7 @@ export default {
     headerNameComp.innerText = `${friend.first_name ?? ''} ${friend.last_name ?? ''}`;
     photoComp.style.backgroundImage = `url(${url})`;
     footerPhotoComp.style.backgroundImage = `url(${model.me.photo_50})`;
+    
     this.setLikes(stats.likes, stats.liked);
     this.setComments(stats.comments);
   },
@@ -35,6 +36,7 @@ export default {
     document.querySelector('.component-photo').addEventListener('touchstart', (e) => { 
       e.preventDefault();
       startFrom = {y: e.changedTouches[0].pageY};
+
     });
 
     document.querySelector('.component-photo').addEventListener('touchend', async (e) => {
@@ -74,8 +76,8 @@ export default {
     });
 
     document.querySelector('.component-comments-container-form-send').addEventListener('click', async () => {
-      if (input.ariaValueMax.trim().length) {
-        await model.postComment(this.photoId, input.ariaValueMax.trim());
+      if (input.value.length) {
+        await model.postComment(this.photoId, input.value.trim());
         input.value = '';
         await this.loadComments(this.photoId);
       }
@@ -85,7 +87,7 @@ export default {
   async loadComments(photo) {
     const comments = await model.getComments(photo);
     const commentsElements = commentsTemplate({
-      list: comments.map((comment) => {
+      list: comments?.map((comment) => {
         return {
           name: `${comment.user.first_name ?? ''} ${comment.user.last_name ?? ''}`,
           photo: comment.user.photo_50,
@@ -96,6 +98,7 @@ export default {
 
     document.querySelector('.component-comments-container-list').innerHTML = '';
     document.querySelector('.component-comments-container-list').append(commentsElements);
+    
     this.setComments(comments.length);
   },
 
@@ -104,11 +107,7 @@ export default {
 
     likesElement.innerText = total;
 
-    if (liked) {
-      likesElement.classList.add('liked');
-    } else {
-      likesElement.classList.remove('liked');
-    }
+    liked ? likesElement.classList.add('liked') : likesElement.classList.remove('liked');
   },
 
   setComments(total) {

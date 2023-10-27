@@ -15,14 +15,14 @@ const methods = {
     
     if (!photoLikes) {
       photoLikes = new Map();
-      DB.likes.get(photoId, photoLikes);
+      DB.likes.set(photoId, photoLikes);
     }
 
     if(photoLikes.get(vkUser.id)) {
       photoLikes.delete(vkUser.id);
       return { likes: photoLikes.size, liked: false};
     }
-
+ 
     photoLikes.set(vkUser.id, true);
     return { likes: photoLikes.size, liked: true};
   },
@@ -51,7 +51,7 @@ const methods = {
   },
   getComments(req, res, url) {
     const photoId = url.searchParams.get('photo');
-    return DB.comments.get(photoId ?? []);
+    return DB.comments.get(photoId) ?? [];
   },
 };
 
@@ -106,7 +106,6 @@ async function getVKUser(token) {
       .on('error', reject)
   );
 
-  console.log({body, token})
   return body.response[0];
 }
 
